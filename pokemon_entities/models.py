@@ -5,6 +5,7 @@ from django.db import models  # noqa F401
 
 class Pokemon(models.Model):
     title = models.CharField(max_length=200)
+    pokemon_img = models.ImageField(upload_to="pokemon_img", null=True, blank=True)
 
     def __repr__(self):
         return f"{self.title}"
