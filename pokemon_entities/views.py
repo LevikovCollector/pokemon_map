@@ -53,7 +53,7 @@ def show_all_pokemons(request):
             pokemons_on_page.append({
                 'pokemon_id': entity.pokemon.id,
                 'img_url': request.build_absolute_uri(entity.pokemon.pokemon_img.url),
-                'title_ru': entity.pokemon.title,
+                'title_ru': entity.pokemon.title_ru,
             })
         pokemon_already_exits = False
 

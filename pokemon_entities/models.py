@@ -4,14 +4,17 @@ from django.db import models  # noqa F401
 
 
 class Pokemon(models.Model):
-    title = models.CharField(max_length=200)
+    title_ru = models.CharField(max_length=200, null=True, blank=True)
+    title_en = models.CharField(max_length=200, null=True, blank=True)
+    title_jp = models.CharField(max_length=200, null=True, blank=True)
+    description = models.TextField(max_length=1500, null=True, blank=True)
     pokemon_img = models.ImageField(upload_to="pokemon_img", null=True, blank=True)
 
     def __repr__(self):
-        return f"{self.title}"
+        return f"{self.title_ru}"
 
     def __str__(self):
-        return f'{self.title}'
+        return f'{self.title_ru}'
 
 
 class PokemonEntity(models.Model):
@@ -27,4 +30,4 @@ class PokemonEntity(models.Model):
     stamina = models.IntegerField(default=0)
 
     def __str__(self):
-        return f'{self.pokemon.title}_{self.level}_{self.lat}_{self.lon}'
+        return f'{self.pokemon.title_ru}_{self.level}_{self.lat}_{self.lon}'
