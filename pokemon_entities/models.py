@@ -26,3 +26,5 @@ class PokemonEntity(models.Model):
     defence = models.IntegerField(default=1)
     stamina = models.IntegerField(default=0)
 
+    def __str__(self):
+        return f'{self.pokemon.title}_{self.level}_{self.lat}_{self.lon}'
