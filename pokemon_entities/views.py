@@ -67,8 +67,9 @@ def show_pokemon(request, pokemon_id):
     # with open('pokemon_entities/pokemons.json', encoding='utf-8') as database:
     #     pokemons = json.load(database)['pokemons']
     today = django.utils.timezone.localtime(django.utils.timezone.now())
-    pokemons_entity = PokemonEntity.objects.filter(appeared_at__lte=today, disappeared_at__gte=today, id=pokemon_id)
-    if not pokemons_entity:
+    pokemon = Pokemon.objects.get(pk=pokemon_id)
+    pokemons_entity = PokemonEntity.objects.filter(appeared_at__lte=today, disappeared_at__gte=today)
+    if not pokemon:
         return HttpResponseNotFound('<h1>Такой покемон не найден</h1>')
 
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
@@ -80,5 +81,5 @@ def show_pokemon(request, pokemon_id):
         )
 
     return render(request, 'pokemon.html', context={
-        'map': folium_map._repr_html_(), 'pokemon': pokemons_entity[0].pokemon
+        'map': folium_map._repr_html_(), 'pokemon': pokemon
     })
