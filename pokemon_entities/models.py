@@ -9,7 +9,10 @@ class Pokemon(models.Model):
     title_jp = models.CharField(max_length=200, null=True, blank=True)
     description = models.TextField(max_length=1500, null=True, blank=True)
     pokemon_img = models.ImageField(upload_to="pokemon_img", null=True, blank=True)
-
+    previous_evolution = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True,
+                                           related_name="pr_evolution")
+    next_evolution = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True,
+                                       related_name="n_evolution")
     def __repr__(self):
         return f"{self.title_ru}"
 
