@@ -67,11 +67,33 @@ def show_pokemon(request, pokemon_id):
     # with open('pokemon_entities/pokemons.json', encoding='utf-8') as database:
     #     pokemons = json.load(database)['pokemons']
     today = django.utils.timezone.localtime(django.utils.timezone.now())
-    pokemon = Pokemon.objects.get(pk=pokemon_id)
+    choosen_pokemon = Pokemon.objects.get(pk=pokemon_id)
     pokemons_entity = PokemonEntity.objects.filter(appeared_at__lte=today, disappeared_at__gte=today)
-    if not pokemon:
+    if not choosen_pokemon:
         return HttpResponseNotFound('<h1>Такой покемон не найден</h1>')
 
+    pokemon = {
+        'pokemon_id': pokemon_id,
+        'title_ru': choosen_pokemon.title_ru,
+        'title_en': choosen_pokemon.title_en,
+        'title_jp': choosen_pokemon.title_jp,
+        'description': choosen_pokemon.description,
+        'img_url': request.build_absolute_uri(choosen_pokemon.pokemon_img.url),
+    }
+
+    if choosen_pokemon.previous_evolution:
+        pokemon["previous_evolution"] = {
+            'title_ru': choosen_pokemon.previous_evolution.title_ru,
+            'pokemon_id': choosen_pokemon.previous_evolution.id,
+            'img_url': request.build_absolute_uri(choosen_pokemon.previous_evolution.pokemon_img.url)
+        }
+    next_evol = choosen_pokemon.next_evolution.first()
+    if next_evol:
+        pokemon["next_evolution"] = {
+            'title_ru': next_evol.title_ru,
+            'pokemon_id': next_evol.id,
+            'img_url': request.build_absolute_uri(next_evol.pokemon_img.url)
+        }
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
     for entity in pokemons_entity:
         add_pokemon(
