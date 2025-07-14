@@ -3,7 +3,7 @@ import folium
 import json
 
 from django.http import HttpResponseNotFound
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from pokemon_entities.models import Pokemon, PokemonEntity
 
@@ -64,10 +64,8 @@ def show_all_pokemons(request):
 
 
 def show_pokemon(request, pokemon_id):
-    # with open('pokemon_entities/pokemons.json', encoding='utf-8') as database:
-    #     pokemons = json.load(database)['pokemons']
     today = django.utils.timezone.localtime(django.utils.timezone.now())
-    choosen_pokemon = Pokemon.objects.get(pk=pokemon_id)
+    choosen_pokemon = get_object_or_404(Pokemon, id=pokemon_id)
     pokemons_entity = PokemonEntity.objects.filter(appeared_at__lte=today, disappeared_at__gte=today)
     if not choosen_pokemon:
         return HttpResponseNotFound('<h1>Такой покемон не найден</h1>')
@@ -87,7 +85,7 @@ def show_pokemon(request, pokemon_id):
             'pokemon_id': choosen_pokemon.previous_evolution.id,
             'img_url': request.build_absolute_uri(choosen_pokemon.previous_evolution.pokemon_img.url)
         }
-    next_evol = choosen_pokemon.next_evolution.first()
+    next_evol = choosen_pokemon.next_evolutions.first()
     if next_evol:
         pokemon["next_evolution"] = {
             'title_ru': next_evol.title_ru,
