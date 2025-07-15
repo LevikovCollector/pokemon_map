@@ -3,6 +3,13 @@ from django.db import models  # noqa F401
 # your models here
 
 
+class PokemonElementType(models.Model):
+    title = models.CharField(max_length=100, verbose_name="Cтихия")
+
+    def __str__(self):
+        return f'{self.title}'
+
+
 class Pokemon(models.Model):
     """
     Model describing pokemon
@@ -14,6 +21,7 @@ class Pokemon(models.Model):
     pokemon_img = models.ImageField(upload_to="pokemon_img", verbose_name="Картика покемона")
     previous_evolution = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True,
                                            related_name="next_evolutions", verbose_name="Предыдущая эволюция")
+    element_type = models.ManyToManyField(PokemonElementType)
 
     def __repr__(self):
         return f"{self.title_ru}"
@@ -40,3 +48,7 @@ class PokemonEntity(models.Model):
 
     def __str__(self):
         return f'{self.pokemon.title_ru}_{self.level}_{self.lat}_{self.lon}'
+
+
+
+
