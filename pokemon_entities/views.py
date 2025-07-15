@@ -67,8 +67,6 @@ def show_pokemon(request, pokemon_id):
     today = django.utils.timezone.localtime(django.utils.timezone.now())
     choosen_pokemon = get_object_or_404(Pokemon, id=pokemon_id)
     pokemons_entity = PokemonEntity.objects.filter(appeared_at__lte=today, disappeared_at__gte=today)
-    if not choosen_pokemon:
-        return HttpResponseNotFound('<h1>Такой покемон не найден</h1>')
 
     pokemon = {
         'pokemon_id': pokemon_id,
