@@ -27,7 +27,7 @@ class PokemonEntity(models.Model):
      Model describing pokemon on the map
      """
     pokemon = models.ForeignKey(Pokemon, on_delete=models.CASCADE, verbose_name="Покемон",
-                                related_name="pokemons_coordinates")
+                                related_name="coordinates")
     lat = models.FloatField(verbose_name="Широта")
     lon = models.FloatField(verbose_name="Долгота")
     appeared_at = models.DateTimeField(null=True, verbose_name="Дата и время появления")
